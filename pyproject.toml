@@ -1,0 +1,170 @@
+# ARIA - Autonomous Reflective Intelligence Architecture
+# ======================================================
+# Project configuration with all dependencies
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aria-agent"
+version = "0.8.0"
+description = "Autonomous Reflective Intelligence Architecture - An AI agent with persistent memory and self-reflection"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "William", email = "wwilamo1@protonmail.com"},
+]
+keywords = ["ai", "agent", "memory", "reflection", "claude", "llm"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    # Core
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0.0",
+
+    # LLM Providers
+    "anthropic>=0.40.0,<2.0.0",
+    "openai>=1.0.0,<3.0.0",
+    "google-generativeai>=0.3.0",
+
+    # Memory System
+    "onnxruntime>=1.20.0",
+    "chromadb>=1.0.0",
+    "rank-bm25>=0.2.2",
+    "numpy>=1.21.0",
+    "sentence-transformers>=2.2.0",
+
+    # Web & Network
+    "requests>=2.31.0",
+    "ddgs>=6.0.0",
+    "beautifulsoup4>=4.12.0",
+    "playwright>=1.40.0",
+
+    # API Server
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "pydantic>=2.0.0",
+
+    # Database
+    "psycopg2-binary>=2.9.9",
+
+    # Communication Channels
+    "python-telegram-bot>=21.0",
+    "discord.py>=2.3.0",
+    "slack-bolt>=1.18.0",
+
+    # Perception
+    "SpeechRecognition>=3.10.0",
+    "pydub>=0.25.1",
+    "Pillow>=10.0.0",
+
+    # Office Documents
+    "openpyxl>=3.1.0",
+    "python-docx>=1.1.0",
+    "python-pptx>=0.6.23",
+    "PyPDF2>=3.0.0",
+
+    # System & Scheduling
+    "psutil>=5.9.0",
+    "schedule>=1.2.0",
+]
+
+[project.optional-dependencies]
+# Development dependencies
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+
+# Voyage AI embeddings (for code memory)
+voyage = [
+    "voyageai>=0.2.0",
+]
+
+[project.scripts]
+aria = "aria:main"
+aria-setup = "scripts.setup_aria:main"
+
+[project.urls]
+Homepage = "https://github.com/Maytrella007/aria-agent"
+Documentation = "https://github.com/Maytrella007/aria-agent#readme"
+Repository = "https://github.com/Maytrella007/aria-agent"
+
+[tool.setuptools]
+packages = ["core", "scripts"]
+package-dir = {"" = "."}
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.json"]
+
+# ============================================================
+# EXTERNAL DEPENDENCIES (Non-Python)
+# ============================================================
+# These must be installed separately before running ARIA:
+#
+# 1. Node.js (v18+) - Required for Claude Code
+#    - macOS: brew install node
+#    - Ubuntu: curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && sudo apt install nodejs
+#    - Windows: https://nodejs.org
+#
+# 2. Claude Code CLI - For code agent functionality
+#    - npm install -g @anthropic-ai/claude-code
+#    - Then authenticate: claude login
+#
+# Run 'python scripts/setup_aria.py' for automated installation
+# ============================================================
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py312']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+    | \.venv
+    | venv
+    | __pycache__
+    | \.pytest_cache
+)/
+'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # function call in default argument
+]

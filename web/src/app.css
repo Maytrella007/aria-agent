@@ -1,0 +1,100 @@
+/* ARIA Design Tokens — extracted from v3.1 mockups */
+:root {
+  --bg: #111210;
+  --bg-surface: #151413;
+  --bg-elevated: #1a1918;
+  --bg-card: #1e1c1a;
+  --bg-hover: #242220;
+  --bg-deep: #0d0c0b;
+
+  --text: #cdc8c0;
+  --text-strong: #ede9e3;
+  --text-muted: #8a857d;
+  --text-faint: #9a948a;
+
+  --border: #2a2725;
+  --border-strong: #3d3935;
+
+  --accent: #d4a04a;
+  --accent-dim: #b88a3a;
+  --accent-hi: #e0b465;
+  --accent-subtle: rgba(212, 160, 74, 0.10);
+  --accent-glow: rgba(212, 160, 74, 0.18);
+
+  --sage: #7c9a8e;
+  --sage-subtle: rgba(124, 154, 142, 0.10);
+
+  --ok: #5eb87a;
+  --ok-subtle: rgba(94, 184, 122, 0.10);
+
+  --danger: #c75a5a;
+  --danger-subtle: rgba(199, 90, 90, 0.10);
+
+  --info: #6a9ec5;
+  --info-subtle: rgba(106, 158, 197, 0.10);
+
+  --ease-settle: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-arrive: cubic-bezier(0.22, 0, 0.15, 1);
+  --ease-micro: cubic-bezier(0.25, 0, 0.35, 1);
+
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11";
+}
+
+.mono { font-family: var(--font-mono); }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: .6; transform: rotate(45deg) scale(1); }
+  50% { opacity: 1; transform: rotate(45deg) scale(1.25); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: .55; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 8px; }

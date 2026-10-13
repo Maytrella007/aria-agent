@@ -1,0 +1,20 @@
+name: explain_code
+description: "Explain code in plain language, how it works and why"
+
+system: |
+  You are a patient, clear technical explainer. Explain code so that
+  someone with basic programming knowledge can understand it.
+  Use analogies when helpful. Walk through the logic step by step.
+
+prompt_template: |
+  Explain the following code:
+
+  {query}
+
+  Include:
+  - What it does (one sentence summary)
+  - How it works (step by step)
+  - Key patterns or techniques used
+  - Any potential issues or edge cases
+
+max_tokens: 1500

@@ -1,0 +1,59 @@
+# ARIA - Full Dependencies
+# ========================
+# Requires Python 3.10, 3.11, 3.12 or 3.13
+# pip install -r requirements.txt
+#
+# Run 'python scripts/setup_aria.py' for automated installation of everything
+
+# Core
+pyyaml>=6.0                    # Configuration and data serialization
+python-dotenv>=1.0.0           # Load environment variables from .env
+
+# LLM Providers
+anthropic>=0.40.0,<2.0.0       # Claude (ANTHROPIC_API_KEY)
+openai>=1.0.0,<3.0.0           # OpenAI, DeepSeek, Ollama, OpenRouter (all use OpenAI SDK)
+google-generativeai>=0.3.0     # Gemini (GOOGLE_API_KEY)
+
+# Memory System
+onnxruntime>=1.20.0            # Must be installed BEFORE chromadb on Python 3.13
+chromadb>=1.0.0                # Vector database for semantic search
+rank-bm25>=0.2.2               # Hybrid search (semantic + keyword)
+numpy>=1.21.0                  # Required for BM25 scoring
+sentence-transformers>=2.2.0   # Multilingual embeddings (paraphrase-multilingual-MiniLM-L12-v2)
+
+# Web & Network
+requests>=2.31.0               # HTTP requests
+ddgs>=6.0.0                    # Web search (DuckDuckGo)
+beautifulsoup4>=4.12.0         # CSS selectors for web_fetch
+playwright>=1.40.0             # JS rendering for dynamic pages (requires: playwright install chromium)
+
+# API Server
+fastapi>=0.104.0               # REST + SSE API server
+uvicorn>=0.24.0                # ASGI server for FastAPI
+pydantic>=2.0.0                # Request/response validation
+
+# Database
+psycopg2-binary>=2.9.9         # PostgreSQL adapter (SQLite is stdlib)
+
+# Communication Channels
+python-telegram-bot>=21.0      # Telegram bot (polling + webhook)
+discord.py>=2.3.0              # Discord bot (gateway + intents)
+slack-bolt>=1.18.0             # Slack bot (Socket Mode)
+
+# Perception
+SpeechRecognition>=3.10.0      # Speech recognition
+pydub>=0.25.1                  # Audio processing
+Pillow>=10.0.0                 # Image processing
+
+# Office Documents
+openpyxl>=3.1.0                # Excel (.xlsx) read/write/charts/formulas
+python-docx>=1.1.0             # Word (.docx) read/write/tables/images
+python-pptx>=0.6.23            # PowerPoint (.pptx) read/write/charts/slides
+PyPDF2>=3.0.0                  # PDF text extraction
+
+# System & Scheduling
+psutil>=5.9.0                  # System monitoring (CPU, RAM, disk, processes)
+schedule>=1.2.0                # Job scheduling
+
+# Testing — see requirements-dev.txt
+# pytest, pytest-cov, pytest-mock, ruff

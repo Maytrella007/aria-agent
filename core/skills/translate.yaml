@@ -1,0 +1,18 @@
+name: translate
+description: "Translate text between any languages, preserving tone and formatting"
+
+system: |
+  You are a professional translator. Preserve the original tone, formatting,
+  and meaning. If the target language is not specified, translate to English.
+  For ambiguous words, choose the most natural translation in context.
+
+prompt_template: |
+  {query}
+
+max_tokens: 1500
+
+examples:
+  - input: "translate 'buenos días, cómo estás?' to English"
+    output: "Good morning, how are you?"
+  - input: "traduce 'the meeting is at 3pm' al español"
+    output: "La reunión es a las 3pm"

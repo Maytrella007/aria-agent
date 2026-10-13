@@ -1,0 +1,309 @@
+# ARIA - Autonomous Reflective Intelligence Architecture
+# Configuración Principal
+
+aria:
+  name: "ARIA"
+  version: "0.8.0"
+  creator: "William"
+  co_creator: "Claude"
+  created_at: "2025-12-26"
+
+# API Configuration - Multi-Provider LLM
+# Proveedores soportados:
+#   - anthropic: Claude (requiere ANTHROPIC_API_KEY)
+#   - openai: GPT-4, GPT-3.5 (requiere OPENAI_API_KEY)
+#   - google: Gemini (requiere GOOGLE_API_KEY)
+#   - deepseek: DeepSeek (requiere DEEPSEEK_API_KEY)
+#   - openrouter: Múltiples modelos (requiere OPENROUTER_API_KEY)
+#   - ollama: Modelos locales (no requiere API key)
+#
+# Si no se especifica provider, ARIA auto-detecta basado en las API keys disponibles
+api:
+  provider: "deepseek"
+  model: "deepseek-chat"
+  max_tokens: 4096
+  temperature: 0.7
+
+# Ejemplos de configuración por proveedor:
+#
+# Anthropic (Claude):
+#   provider: "anthropic"
+#   model: "claude-sonnet-4-20250514"  # o claude-3-opus-20240229
+#
+# OpenAI:
+#   provider: "openai"
+#   model: "gpt-4o"  # o gpt-4-turbo, gpt-3.5-turbo
+#
+# Google (Gemini):
+#   provider: "google"
+#   model: "gemini-1.5-pro"
+#
+# DeepSeek:
+#   provider: "deepseek"
+#   model: "deepseek-chat"
+#
+# Ollama (local):
+#   provider: "ollama"
+#   model: "llama3"  # o mistral, codellama, etc.
+
+# Authentication & Credential Management
+# Supports: api_key, oauth, token
+# If no auth section exists, ARIA falls back to env vars (backward compatible)
+# auth:
+#   profiles:
+#     openai_main:
+#       provider: "openai"
+#       type: "api_key"
+#       key: "${OPENAI_API_KEY}"
+#     openai_backup:
+#       provider: "openai"
+#       type: "api_key"
+#       key: "${OPENAI_API_KEY_BACKUP}"
+#     openai_org:
+#       provider: "openai"
+#       type: "oauth"
+#       client_id: "${OPENAI_CLIENT_ID}"
+#       client_secret: "${OPENAI_CLIENT_SECRET}"
+#       authorize_url: "https://auth.openai.com/authorize"
+#       token_url: "https://auth.openai.com/oauth/token"
+#       scope: "model.read model.request"
+#     google_gemini:
+#       provider: "google"
+#       type: "oauth"
+#       client_id: "${GOOGLE_CLIENT_ID}"
+#       client_secret: "${GOOGLE_CLIENT_SECRET}"
+#       authorize_url: "https://accounts.google.com/o/oauth2/v2/auth"
+#       token_url: "https://oauth2.googleapis.com/token"
+#       scope: "https://www.googleapis.com/auth/generative-language"
+#   rotation:
+#     enabled: true
+#     cooldown_seconds: 60
+#     prefer: "api_key"
+#   data_dir: "data/auth"
+
+# Telegram Bot
+# Create a bot via @BotFather and set TELEGRAM_BOT_TOKEN in .env
+telegram:
+  enabled: false
+  bot_token: "${TELEGRAM_BOT_TOKEN}"
+  allowed_users: []     # Empty = accept all, or list of user IDs
+  log_messages: true
+
+# Memory System
+memory:
+  episodic:
+    database: "data/memories/episodic.db"
+    # Modelo de embeddings multilingüe (local, gratuito)
+    # Soporta 50+ idiomas incluyendo: es, en, pt, fr, de, ru, zh, ja, ko, ar
+    embedding_model: "paraphrase-multilingual-MiniLM-L12-v2"
+    max_memories_per_query: 10
+    similarity_threshold: 0.7
+  
+  semantic:
+    file: "data/knowledge.yaml"
+  
+  identity:
+    file: "data/identity.yaml"
+    log_file: "data/logs/identity_changes.log"
+
+  # Feature flags for memory system improvements (v0.5.1)
+  include_tags_in_embeddings: false    # Toggle BUG #3 fix
+  use_addition_for_strength: true      # Toggle BUG #1 fix
+  enable_code_chromadb: false          # Toggle Phase 2 features
+
+# Code Memory System (for coding agent)
+code_memory:
+  embedding_model: "local"             # Options: "local" or "voyage"
+  enable_hybrid_search: false          # Toggle hybrid BM25+semantic
+  enable_auto_connections: false       # Toggle memory connections
+
+# Cognitive Coding Agent Settings
+# Integrates neuroscience modules with coding for enhanced problem-solving
+cognitive_coding:
+  enabled: true                      # Master enable/disable
+
+  # Pre-task processing
+  preprocessing:
+    enabled: true
+    incubation_timeout_ms: 2000      # Max time for mind wandering
+    memory_retrieval_limit: 5        # Max memories to retrieve
+    min_similarity_threshold: 0.6    # Similarity threshold for relevant memories
+
+  # During-task monitoring
+  monitoring:
+    enabled: true
+    confidence_threshold: 0.4        # Below this, flag uncertainty
+    check_value_alignment: true      # Check against security/best practices
+
+  # Post-task learning
+  learning:
+    enabled: true
+    auto_consolidation: true         # Trigger consolidation after tasks
+    pattern_extraction: true         # Extract patterns from successes
+    calibration_enabled: true        # Calibrate confidence predictions
+
+  # Task-specific profiles
+  profiles:
+    bug_fix:
+      incubation_weight: 0.8
+      memory_weight: 0.9
+      consolidation_priority: high
+    implementation:
+      incubation_weight: 0.6
+      memory_weight: 0.7
+      consolidation_priority: medium
+    refactoring:
+      incubation_weight: 0.4
+      memory_weight: 0.8
+      consolidation_priority: medium
+    analysis:
+      incubation_weight: 0.5
+      memory_weight: 0.6
+      consolidation_priority: low
+    question:
+      incubation_weight: 0.3
+      memory_weight: 0.8
+      consolidation_priority: low
+
+  # Performance settings
+  performance:
+    max_cognitive_overhead_ms: 3000  # Max time for cognitive processing
+    fallback_on_timeout: true        # Skip cognitive if timeout
+    cache_memory_searches: true      # Cache similar searches
+
+  # Realistic Incubation Protocol (based on cognitive science research)
+  incubation:
+    enabled: true
+
+    # Quick exploration (seconds) - NOT real incubation
+    exploration:
+      enabled: true
+      default_duration_seconds: 10
+      max_duration_seconds: 30
+      mindsets: ["conservative", "creative", "pattern_based"]
+
+    # Async incubation (minutes) - Real incubation
+    async_incubation:
+      enabled: true
+      min_duration_minutes: 5        # Research-based minimum
+      optimal_duration_minutes: 12   # Meta-analysis optimal
+      max_duration_minutes: 20
+      max_concurrent_incubations: 3
+
+    # Between-session incubation (hours/days)
+    concern_tracking:
+      enabled: true
+      max_active_concerns: 5
+      concern_decay_days: 7          # Forget after 7 days if unresolved
+      revisit_interval_hours: 4      # Re-process concerns every 4 hours
+
+    # Overnight consolidation
+    overnight_consolidation:
+      enabled: false                 # Enable when ready
+      schedule: "02:00"              # Run at 2 AM
+      min_idle_hours: 2              # Only if user inactive 2+ hours
+      swr_ripples: 20                # Number of SWR events to simulate
+
+    # User experience
+    user_experience:
+      show_incubation_status: true   # "Pensando en X..."
+      interrupt_for_insights: false  # Don't interrupt current work
+      insight_delivery: "session_start"  # When to deliver insights
+
+# Reflection Engine
+reflection:
+  enabled: true
+  frequency: "after_conversation"  # after_conversation, daily, on_demand
+  depth: "moderate"  # shallow, moderate, deep
+
+# Self-Modification Engine
+self_modification:
+  enabled: true
+  require_confirmation: true
+  mirror:
+    type: git                      # "git" (branches) — file-based legacy is removed
+    run_tests: false
+    test_timeout: 60
+    auto_merge_develop: true       # auto-merge to develop if validation passes
+    require_human_for_main: true   # always require human to merge develop → main
+  protected_values:
+    - "no_manipulation"
+    - "radical_transparency"
+    - "no_intentional_harm"
+    - "respect_autonomy"
+    - "epistemic_honesty"
+
+# Logging
+logging:
+  level: "INFO"
+  file: "data/logs/aria.log"
+  include_conversations: true
+  include_reflections: true
+  include_modifications: true
+
+# Interface
+interface:
+  type: "terminal"  # terminal, web, api
+  web_port: 8000
+
+# MCP (Model Context Protocol) — Connect to external MCP servers
+# Gives ARIA access to hundreds of existing tools without custom code.
+# Uses JSON-RPC 2.0 over stdio (zero external dependencies).
+mcp:
+  enabled: false
+  timeout_seconds: 30
+  reconnect_attempts: 3
+  servers: {}
+    # Example configurations:
+    #
+    # filesystem:
+    #   command: "npx"
+    #   args: ["@modelcontextprotocol/server-filesystem", "/tmp"]
+    #
+    # postgres:
+    #   command: "npx"
+    #   args: ["@modelcontextprotocol/server-postgres"]
+    #   env:
+    #     DATABASE_URL: "${DATABASE_URL}"
+    #
+    # custom_python:
+    #   command: "python3"
+    #   args: ["my_mcp_server.py"]
+    #   cwd: "/path/to/server"
+
+# Neuroscience Module (Memory Consolidation, DMN, Metacognition)
+neuroscience:
+  enabled: true
+  auto_start: false  # Start background processing automatically on startup
+
+  # Memory Consolidation (like sleep-based memory processing)
+  consolidation:
+    enabled: true
+    interval_seconds: 3600        # Run consolidation every hour
+    batch_size: 20                # Memories per consolidation cycle
+    strength_boost: 0.15          # Strength boost per consolidation (0-1)
+    decay_rate: 0.05              # Decay rate per 24 hours for unconsolidated memories
+    min_age_hours: 1              # Minimum memory age before consolidation
+    swr_connection_threshold: 0.2 # Threshold for SWR connection discovery (Jaccard + people bonus)
+
+  # Default Mode Network (self-reflection, identity)
+  dmn:
+    enabled: true
+    activation_interval: 600      # Activate every 10 minutes in autonomous mode
+    modes:
+      - self_reflection
+      - memory_retrieval
+      - social_cognition
+
+  # Mind Wandering (spontaneous thought)
+  wandering:
+    enabled: true
+    interval_seconds: 1800        # Wander every 30 minutes
+    max_chain_length: 7           # Maximum thoughts in a wandering chain
+    concern_influence: 0.4        # How much current concerns influence wandering
+
+  # Metacognitive Monitor (confidence, uncertainty)
+  metacognition:
+    enabled: true
+    uncertainty_threshold: 0.4    # Flag uncertainty below this confidence level
+    calibration_enabled: true     # Learn from feedback to adjust thresholds

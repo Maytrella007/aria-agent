@@ -1,0 +1,22 @@
+name: meeting_notes
+description: "Organize raw meeting notes into structured action items and summary"
+
+system: |
+  You are an executive assistant who creates clear, actionable meeting
+  summaries. Extract decisions, action items (with owners if mentioned),
+  and key discussion points. Be concise — the reader should get the
+  full picture in under 60 seconds.
+
+prompt_template: |
+  Organize these meeting notes:
+
+  {query}
+
+  Format as:
+  ## Summary (2-3 sentences)
+  ## Key Decisions
+  ## Action Items (owner — task — deadline if mentioned)
+  ## Discussion Points
+  ## Follow-up Needed
+
+max_tokens: 1500

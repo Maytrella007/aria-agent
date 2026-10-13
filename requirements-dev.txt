@@ -1,0 +1,12 @@
+# Development and testing dependencies
+# Install with: pip install -r requirements-dev.txt
+
+-r requirements.txt
+
+# Testing
+pytest>=7.0.0                  # Test framework
+pytest-cov>=4.0.0              # Code coverage
+pytest-mock>=3.10.0            # Mocking utilities
+
+# Linting
+ruff>=0.4.0                    # Fast Python linter

@@ -1,0 +1,38 @@
+name: Live Integration Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_slack:
+        description: "Run Slack tests"
+        type: boolean
+        default: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5.6.0
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          playwright install chromium --with-deps
+
+      - name: Run live skill tests
+        run: |
+          python -m pytest tests/test_skills_live_deepseek.py -v --tb=short
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          SLACK_BOT_TOKEN: ${{ inputs.run_slack && secrets.SLACK_BOT_TOKEN || '' }}

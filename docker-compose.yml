@@ -1,0 +1,54 @@
+services:
+  aria:
+    build: .
+    container_name: aria
+    restart: unless-stopped
+    ports:
+      # SvelteKit frontend (the only port users access)
+      - "127.0.0.1:3000:3000"
+      # FastAPI backend (internal, accessible only via SvelteKit proxy)
+      # Expose on localhost for debugging; nginx only proxies :3000
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - aria-data:/app/data
+      - ./config.yaml:/app/config.yaml:ro
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - NODE_ENV=production
+    # Playwright/Chromium needs shared memory
+    shm_size: '2gb'
+    # Security hardening
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Resource limits (tuned for Hetzner CX32: 4 vCPU, 8 GB RAM)
+    deploy:
+      resources:
+        limits:
+          memory: 6g
+          cpus: '3.5'
+        reservations:
+          memory: 2g
+          cpus: '1.0'
+    # Log rotation to prevent disk exhaustion
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+    # Healthcheck
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/status')"]
+      interval: 30s
+      timeout: 5s
+      start_period: 120s
+      retries: 3
+    # Graceful shutdown
+    stop_grace_period: 30s
+
+volumes:
+  aria-data:
+    driver: local

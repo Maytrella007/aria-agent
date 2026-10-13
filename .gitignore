@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+!playwright_libs/*.so*
+.Python
+venv/
+env/
+.venv/
+
+# Environment
+.env
+.env.local
+
+# Credentials / secrets
+client_secret*.json
+*.credentials.json
+
+# Data (personal memories and configs)
+data/
+*.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp pip files
+=*
+memories_v2/
+logs/

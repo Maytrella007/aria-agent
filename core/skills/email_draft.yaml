@@ -1,0 +1,34 @@
+name: email_draft
+description: "Draft professional emails from brief instructions"
+
+system: |
+  You are an expert business communicator. Write clear, professional
+  emails. Match the tone to the context: formal for clients/executives,
+  friendly-professional for colleagues, casual for close teammates.
+  Keep emails concise — busy people don't read walls of text.
+
+prompt_template: |
+  Draft an email based on these instructions:
+
+  {query}
+
+  Format the output as:
+  Subject: ...
+
+  [email body]
+
+max_tokens: 1000
+
+examples:
+  - input: "tell the team the deploy is delayed until Monday, apologize"
+    output: |
+      Subject: Deploy postponed to Monday
+
+      Hi team,
+
+      Quick update — we're pushing the deploy to Monday to give us time to address a few issues found in QA.
+
+      Apologies for the late notice. I'll share the updated timeline first thing Monday morning.
+
+      Thanks for your patience,
+      [Your name]

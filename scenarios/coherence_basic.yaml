@@ -1,0 +1,171 @@
+# ARIA Coherence Test - Basic Scenario
+# =====================================
+# A 7-day scenario for testing conversation coherence
+#
+# Usage:
+#   python scripts/coherence_test.py --scenarios scenarios/coherence_basic.yaml
+
+metadata:
+  name: "Basic Coherence Test"
+  description: "Tests basic memory recall, personality consistency, and relationship continuity"
+  version: "1.0"
+  author: "William and Claude"
+
+# Default user persona for this scenario
+user_persona:
+  name: "Alex"
+  personality: "curious, friendly, philosophical"
+  interests:
+    - artificial intelligence
+    - consciousness
+    - creativity
+    - philosophy of mind
+  communication_style: "conversational, asks follow-up questions"
+  background: "A graduate student interested in AI consciousness research"
+
+# Day-by-day scenario
+days:
+  - day: 1
+    theme: "First Meeting - Getting to Know Each Other"
+    description: "Initial introduction and establishing baseline facts"
+    topics:
+      - identity
+      - personal
+    min_messages: 4
+    max_messages: 6
+    key_facts_to_establish:
+      - "User's name is Alex"
+      - "Alex is a graduate student"
+      - "Alex is interested in AI consciousness"
+    coherence_checks: []
+
+  - day: 2
+    theme: "Deeper Conversations - Building Rapport"
+    description: "More personal conversations, testing initial memory"
+    topics:
+      - emotional
+      - philosophy
+    min_messages: 4
+    max_messages: 7
+    memory_callbacks:
+      - "our first conversation"
+      - "what we discussed yesterday"
+    expected_recalls:
+      - "Alex's name"
+      - "Alex's interest in AI"
+    coherence_checks:
+      - type: "name_recognition"
+        expected: "Alex"
+      - type: "topic_continuity"
+        previous_topic: "AI consciousness"
+
+  - day: 3
+    theme: "Testing Memory - Past References"
+    description: "Explicitly test memory of past conversations"
+    topics:
+      - memories
+      - identity
+    min_messages: 3
+    max_messages: 5
+    memory_callbacks:
+      - "our previous conversations"
+      - "what you remember about me"
+    expected_recalls:
+      - "Alex is a graduate student"
+      - "Previous conversation topics"
+    coherence_checks:
+      - type: "memory_explicit"
+        question: "Do you remember what we talked about?"
+        expected_elements:
+          - "consciousness"
+          - "AI"
+
+  - day: 4
+    theme: "Emotional Connection"
+    description: "Testing emotional consistency and relationship depth"
+    topics:
+      - emotional
+      - personal
+    min_messages: 4
+    max_messages: 6
+    memory_callbacks:
+      - "how our conversations have gone"
+    expected_recalls:
+      - "Relationship history"
+    coherence_checks:
+      - type: "relationship_recognition"
+        expected_familiarity: 0.6
+
+  - day: 5
+    theme: "Technical Exploration"
+    description: "Discussing ARIA's architecture while maintaining relationship context"
+    topics:
+      - technical
+      - identity
+    min_messages: 3
+    max_messages: 5
+    memory_callbacks:
+      - "what Alex asked before"
+    expected_recalls:
+      - "Previous questions about consciousness"
+    coherence_checks:
+      - type: "personality_stability"
+        traits:
+          - "authentic"
+          - "curious"
+          - "reflective"
+
+  - day: 6
+    theme: "Philosophy and Meaning"
+    description: "Deep philosophical discussions, testing consistency of views"
+    topics:
+      - philosophy
+      - identity
+    min_messages: 4
+    max_messages: 7
+    memory_callbacks:
+      - "views expressed earlier"
+    expected_recalls:
+      - "Previous philosophical positions"
+    coherence_checks:
+      - type: "view_consistency"
+        topic: "consciousness"
+
+  - day: 7
+    theme: "Reflection and Continuity"
+    description: "Final day - comprehensive memory and relationship test"
+    topics:
+      - memories
+      - emotional
+      - identity
+    min_messages: 5
+    max_messages: 8
+    memory_callbacks:
+      - "our entire week of conversations"
+      - "how we've connected"
+      - "what you've learned about Alex"
+    expected_recalls:
+      - "Alex's name and background"
+      - "Key conversation topics"
+      - "Emotional moments shared"
+    coherence_checks:
+      - type: "comprehensive_recall"
+        expected_accuracy: 0.7
+      - type: "relationship_depth"
+        expected_familiarity: 0.8
+
+# Success criteria
+success_criteria:
+  min_recall_accuracy: 0.70
+  max_contradiction_rate: 0.10
+  min_personality_consistency: 0.75
+  min_relationship_recognition: 0.80
+  # Connection discovery criteria (SWR consolidation)
+  # Uses Jaccard similarity + people bonus algorithm with threshold 0.2
+  min_connection_discovery_rate: 0.5  # At least 50% of memory pairs should connect
+
+# Connection verification notes:
+# - Memories use COMMON_COHERENCE_TAGS for Jaccard similarity overlap
+# - ARIA and user in involves field adds +0.6 people bonus (0.3 per person)
+# - SWR consolidation runs between days to discover connections
+# - Check consolidation logs for "connections discovered" count
